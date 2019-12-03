@@ -47,7 +47,7 @@ object assignments2 {
 
 }
 
-class BankAccount(var balance: Double) {
+class BankAccount(private var balance: Double) {
 
   def this() { this(0) }
 

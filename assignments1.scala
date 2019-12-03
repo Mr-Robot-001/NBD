@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 object assignments1 {
   val days = List("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
   val products = Map("clothes" -> 1000, "shoes" -> 500)
@@ -8,16 +10,16 @@ object assignments1 {
     println(task1("b"))
     println(task1("c"))
     println("Task2:")
-    println(task2("a",days))
-    println(task2("b",days))
+    println(task2("a", days))
+    println(task2("b", days))
     println("Task3:")
-    println(task3("", 0))
+    println(task3(days))
     println("Task4:")
     println(task4("a"))
     println(task4("b"))
     println(task4("c"))
     println("Task5:")
-    println(task5())
+    println(task5)
     println("Task6:")
     println(task6(1 :: 2 :: 3 :: Nil))
     println("Task7")
@@ -30,6 +32,7 @@ object assignments1 {
     task10("shoes")
     task10("Clothes")
     task10("trouser")
+
   }
 
   def task1(t: String): String = {
@@ -38,7 +41,7 @@ object assignments1 {
       for (day <- days)
         s += day + ", "
     else if (t.equals("b"))
-      for (day <- days if day.toLowerCase().startsWith("s"))
+      for (day <- days if day.toLowerCase.startsWith("s"))
         s += day + ", "
     else if (t.equals("c")) {
       var i: Int = 0
@@ -50,7 +53,7 @@ object assignments1 {
     return s.substring(0, s.length - 2)
   }
 
- def task2(t: String, l: List[String]): String = {
+  def task2(t: String, l: List[String]): String = {
     if (t == "a") {
       if (l.tail.isEmpty)
         return l.head
@@ -62,12 +65,14 @@ object assignments1 {
       return task2("a", l.tail) + ", " + l.head
     } else return ""
   }
-
-  def task3(s: String, i: Int): String = {
-    if (i == days.length)
-      return s.substring(0, s.length - 2)
-    else
-      task3(s + days(i) + ", ", i + 1)
+  def task3(ll: List[String]): String = {
+    @tailrec
+    def task33(l: List[String],s:String): String = {
+      if (l.tail.isEmpty)
+        return s+l.head
+      else   task33(l.tail,s+l.head + ", ")
+    }
+    task33(ll,"")
   }
 
   def task4(t: String): String = {
@@ -77,15 +82,15 @@ object assignments1 {
     else if (t.equals("b"))
       s = days.foldRight("")(_ + ", " + _)
     else if (t.equals("c"))
-      s = days.foldRight("") { (next, sum) => if (next.toLowerCase().startsWith("s")) next + ", " + sum else sum }
+      s = days.foldRight("") { (next, sum) => if (next.toLowerCase.startsWith("s")) next + ", " + sum else sum }
     return s.substring(0, s.length - 2)
   }
 
-  def task5(): Map[String, Double] = products.mapValues(_ * 0.9)
+  def task5: Map[String, Double] = products.mapValues(_ * 0.9)
 
   def task6(l: List[Int]): List[Int] = l.map(_ + 1)
 
-  def task7(l: List[Double]): List[Double] = l.filter(-5 < _).filter(_ < 12).map(_ abs)
+  def task7(l: List[Double]): List[Double] = l.filter(-5 < _).filter(_ < 12).map(_.abs)
 
   def task8(tuple: Tuple3[Int, Double, String]): Unit = println(tuple)
 
@@ -96,13 +101,11 @@ object assignments1 {
   }
 
   def task10(product: String) = {
-    val price: Option[Int] = products.get(product.toLowerCase())
+    val price: Option[Int] = products.get(product.toLowerCase)
     println(price.getOrElse("Sorry, we do not have this product -> " + product))
     if (price.isDefined && price.get >= 1000)
       println(product + " is on sale, you will have 10% off now")
     println("#################################")
   }
-
- 
 
 }
