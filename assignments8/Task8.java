@@ -61,7 +61,7 @@ public class Task8{
 		try {
 			myBucket.delete(key).execute();
 			fetchedDocument = myBucket.fetch(key, String.class).execute();
-			System.out.println("delete: " + fetchedDocument );
+			System.out.println("delete and retrieve and println: " + fetchedDocument );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
